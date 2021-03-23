@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Agendak</string>
+    <string name="formulario_nome">Nome:</string>
+    <string name="formulario_telefone">Telefone:</string>
+    <string name="formulario_email">Email:</string>
+    <string name="formulario_button">Salvar</string>
 </resources>
