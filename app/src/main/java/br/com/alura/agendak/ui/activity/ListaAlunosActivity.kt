@@ -1,5 +1,6 @@
 package br.com.alura.agendak.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +13,15 @@ class ListaAlunosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_alunos)
 
-        val dao = AlunoDAO()
         title = "Lista de Alunos"
+        activity_lista_alunos_fab_novo_aluno.setOnClickListener {
+            startActivity(Intent(this, FormularioAlunoActivity::class.java))
+        }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        val dao = AlunoDAO()
         activity_lista_alunos_listview.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, dao.alunos)
-
     }
 }
