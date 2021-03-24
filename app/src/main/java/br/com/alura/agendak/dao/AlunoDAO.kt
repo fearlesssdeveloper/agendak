@@ -13,20 +13,29 @@ class AlunoDAO {
     fun salva(aluno: Aluno) {
         aluno.id = contadorIds
         Companion.alunos.add(aluno)
+        atualizaIds()
+    }
+
+    private fun atualizaIds() {
         contadorIds++
     }
 
     fun edita(aluno: Aluno) {
+        var alunoEncontrado: Aluno? = buscaAlunoPeloId(aluno)
+        alunoEncontrado?.let {
+            val posicao = Companion.alunos.indexOf(alunoEncontrado)
+            Companion.alunos[posicao] = aluno
+        }
+    }
+
+    private fun buscaAlunoPeloId(aluno: Aluno): Aluno? {
         var alunoEncontrado: Aluno? = null
         Companion.alunos.forEach {
             if (aluno.id == it.id) {
                 alunoEncontrado = it
             }
         }
-        alunoEncontrado?.let {
-            val posicao = Companion.alunos.indexOf(alunoEncontrado)
-            Companion.alunos[posicao] = aluno
-        }
+        return alunoEncontrado
     }
 
 }

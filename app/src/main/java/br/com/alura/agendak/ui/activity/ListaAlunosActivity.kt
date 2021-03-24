@@ -2,16 +2,17 @@ package br.com.alura.agendak.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
 import br.com.alura.agendak.model.Aluno
+import br.com.alura.agendak.ui.activity.ConstantesActivities.Companion.CHAVE_ALUNO
 import kotlinx.android.synthetic.main.activity_lista_alunos.*
 
 class ListaAlunosActivity : AppCompatActivity() {
     private val dao = AlunoDAO()
+    private val alunos = dao.alunos
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +25,11 @@ class ListaAlunosActivity : AppCompatActivity() {
 
     private fun configuraFabNovoAluno() {
         activity_lista_alunos_fab_novo_aluno.setOnClickListener {
-            abreFormularioAlunoActivity()
+            abreFormularioModoInsereAluno()
         }
     }
 
-    private fun abreFormularioAlunoActivity() {
+    private fun abreFormularioModoInsereAluno() {
         startActivity(Intent(this, FormularioAlunoActivity::class.java))
     }
 
@@ -38,15 +39,25 @@ class ListaAlunosActivity : AppCompatActivity() {
     }
 
     private fun configuraLista() {
-        val alunos = dao.alunos
+        configuraAdapter()
+        configuraListenerDeCliquePorItem()
+    }
+
+    private fun configuraAdapter() {
         activity_lista_alunos_listview.adapter =
             ArrayAdapter(this, android.R.layout.simple_list_item_1, alunos)
-        activity_lista_alunos_listview.setOnItemClickListener { adapterView, view, posicao, id ->
-            var alunoEscolhido = alunos[posicao]
-            val vaiParaFormularioActivity = Intent(this, FormularioAlunoActivity::class.java)
-            vaiParaFormularioActivity.putExtra("aluno", alunoEscolhido)
-            startActivity(vaiParaFormularioActivity)
-//            Log.i("aluno: ", "$alunoEscolhido")
+    }
+
+    private fun configuraListenerDeCliquePorItem() {
+        activity_lista_alunos_listview.setOnItemClickListener { adapterView, _, posicao, _ ->
+            var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
+            abreFormularioModoEditaAluno(alunoEscolhido)
         }
+    }
+
+    private fun abreFormularioModoEditaAluno(aluno: Aluno) {
+        val vaiParaFormularioActivity = Intent(this, FormularioAlunoActivity::class.java)
+        vaiParaFormularioActivity.putExtra(CHAVE_ALUNO, aluno)
+        startActivity(vaiParaFormularioActivity)
     }
 }
