@@ -13,6 +13,7 @@ class FormularioAlunoActivity : AppCompatActivity() {
     private lateinit var campoTelefone: TextInputEditText
     private lateinit var campoEmail: TextInputEditText
     private val dao = AlunoDAO()
+    private lateinit var aluno: Aluno
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,16 +25,19 @@ class FormularioAlunoActivity : AppCompatActivity() {
         configuraBotaoSalvar()
 
         val dados = intent
-        val aluno = dados.getParcelableExtra<Aluno>("aluno")
-        campoNome.setText(aluno?.nome)
-        campoTelefone.setText(aluno?.telefone)
-        campoEmail.setText(aluno?.email)
+        aluno = dados.getParcelableExtra("aluno")!!
+        campoNome.setText(aluno.nome)
+        campoTelefone.setText(aluno.telefone)
+        campoEmail.setText(aluno.email)
     }
 
     private fun configuraBotaoSalvar() {
         activity_formulario_aluno_button.setOnClickListener {
-            val alunoCriado = criaAluno()
-            salva(alunoCriado)
+//            val alunoCriado = preencheAluno()
+//            salva(alunoCriado)
+            preencheAluno()
+            dao.edita(aluno)
+            finish()
         }
     }
 
@@ -48,11 +52,13 @@ class FormularioAlunoActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun criaAluno(): Aluno {
+    private fun preencheAluno() {
         val nome = campoNome.text.toString().trim()
         val telefone = campoTelefone.text.toString().trim()
         val email = campoEmail.text.toString().trim()
 
-        return Aluno(nome, telefone, email)
+        aluno.nome = nome
+        aluno.telefone = telefone
+        aluno.email = email
     }
 }

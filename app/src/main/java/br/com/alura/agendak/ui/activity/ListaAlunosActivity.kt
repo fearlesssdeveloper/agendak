@@ -18,8 +18,8 @@ class ListaAlunosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lista_alunos)
         title = "Lista de Alunos"
         configuraFabNovoAluno()
-        dao.salva(Aluno("José", "984350068", "ze@icloud.com"))
-        dao.salva(Aluno("Anna", "984030407", "anna@icloud.com"))
+        dao.salva(Aluno(nome = "José", telefone = "984350068", email = "ze@icloud.com"))
+        dao.salva(Aluno(nome = "Anna", telefone = "984030407", email = "anna@icloud.com"))
     }
 
     private fun configuraFabNovoAluno() {
