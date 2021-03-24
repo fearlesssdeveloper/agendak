@@ -25,18 +25,24 @@ class FormularioAlunoActivity : AppCompatActivity() {
         configuraBotaoSalvar()
 
         val dados = intent
-        aluno = dados.getParcelableExtra("aluno")!!
-        campoNome.setText(aluno.nome)
-        campoTelefone.setText(aluno.telefone)
-        campoEmail.setText(aluno.email)
+        if (dados.hasExtra("aluno")) {
+            aluno = dados.getParcelableExtra("aluno")!!
+            campoNome.setText(aluno.nome)
+            campoTelefone.setText(aluno.telefone)
+            campoEmail.setText(aluno.email)
+        } else {
+            aluno = Aluno()
+        }
     }
 
     private fun configuraBotaoSalvar() {
         activity_formulario_aluno_button.setOnClickListener {
-//            val alunoCriado = preencheAluno()
-//            salva(alunoCriado)
             preencheAluno()
-            dao.edita(aluno)
+            if (aluno.temIdValido()) {
+                dao.edita(aluno)
+            } else {
+                dao.salva(aluno)
+            }
             finish()
         }
     }
@@ -45,11 +51,6 @@ class FormularioAlunoActivity : AppCompatActivity() {
         campoNome = activity_formulario_aluno_nome
         campoTelefone = activity_formulario_aluno_telefone
         campoEmail = activity_formulario_aluno_email
-    }
-
-    private fun salva(aluno: Aluno) {
-        dao.salva(aluno)
-        finish()
     }
 
     private fun preencheAluno() {
