@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
@@ -39,10 +38,15 @@ class ListaAlunosActivity : AppCompatActivity() {
     }
 
     private fun configuraLista() {
+        val alunos = dao.alunos
         activity_lista_alunos_listview.adapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, dao.alunos)
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, alunos)
         activity_lista_alunos_listview.setOnItemClickListener { adapterView, view, posicao, id ->
-            Log.i("posição aluno: ", "$posicao")
+            var alunoEscolhido = alunos[posicao]
+            val vaiParaFormularioActivity = Intent(this, FormularioAlunoActivity::class.java)
+            vaiParaFormularioActivity.putExtra("aluno", alunoEscolhido)
+            startActivity(vaiParaFormularioActivity)
+//            Log.i("aluno: ", "$alunoEscolhido")
         }
     }
 }
