@@ -21,6 +21,7 @@ class ListaAlunosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lista_alunos)
         title = "Lista de Alunos"
         configuraFabNovoAluno()
+        configuraLista()
         dao.salva(Aluno(nome = "José", telefone = "984350068", email = "ze@icloud.com"))
         dao.salva(Aluno(nome = "Anna", telefone = "984030407", email = "anna@icloud.com"))
     }
@@ -37,22 +38,35 @@ class ListaAlunosActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        configuraLista()
+        atualizaAlunos()
+    }
+
+    private fun atualizaAlunos() {
+        adapter.clear()
+        adapter.addAll(alunos)
     }
 
     private fun configuraLista() {
         configuraAdapter()
         configuraListenerDeCliquePorItem()
+        configuraListenerDeCliqueLongoPorItem()
+    }
+
+    private fun configuraListenerDeCliqueLongoPorItem() {
         activity_lista_alunos_listview.setOnItemLongClickListener { adapterView, view, posicao, id ->
             var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
-            dao.remove(alunoEscolhido)
-            adapter.remove(alunoEscolhido)
+            remove(alunoEscolhido)
             true
         }
     }
 
+    private fun remove(aluno: Aluno) {
+        dao.remove(aluno)
+        adapter.remove(aluno)
+    }
+
     private fun configuraAdapter() {
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, alunos)
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1)
         activity_lista_alunos_listview.adapter = adapter
     }
 
