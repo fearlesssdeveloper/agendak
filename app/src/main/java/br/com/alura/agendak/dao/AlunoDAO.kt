@@ -38,4 +38,11 @@ class AlunoDAO {
         return alunoEncontrado
     }
 
+    fun remove(aluno: Aluno) {
+        val alunoDevolvido = buscaAlunoPeloId(aluno)
+        alunoDevolvido?.let {
+            Companion.alunos.remove(it)
+        }
+    }
+
 }

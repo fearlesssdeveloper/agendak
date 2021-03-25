@@ -2,6 +2,7 @@ package br.com.alura.agendak.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
@@ -41,6 +42,11 @@ class ListaAlunosActivity : AppCompatActivity() {
     private fun configuraLista() {
         configuraAdapter()
         configuraListenerDeCliquePorItem()
+        activity_lista_alunos_listview.setOnItemLongClickListener { adapterView, view, posicao, id ->
+            var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
+            dao.remove(alunoEscolhido)
+            true
+        }
     }
 
     private fun configuraAdapter() {
