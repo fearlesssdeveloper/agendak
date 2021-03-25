@@ -3,6 +3,8 @@ package br.com.alura.agendak.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextMenu
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
@@ -24,6 +26,15 @@ class ListaAlunosActivity : AppCompatActivity() {
         configuraLista()
         dao.salva(Aluno(nome = "José", telefone = "984350068", email = "ze@icloud.com"))
         dao.salva(Aluno(nome = "Anna", telefone = "984030407", email = "anna@icloud.com"))
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menu?.add("Remover")
     }
 
     private fun configuraFabNovoAluno() {
@@ -49,15 +60,7 @@ class ListaAlunosActivity : AppCompatActivity() {
     private fun configuraLista() {
         configuraAdapter()
         configuraListenerDeCliquePorItem()
-        configuraListenerDeCliqueLongoPorItem()
-    }
-
-    private fun configuraListenerDeCliqueLongoPorItem() {
-        activity_lista_alunos_listview.setOnItemLongClickListener { adapterView, view, posicao, id ->
-            var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
-            remove(alunoEscolhido)
-            true
-        }
+        registerForContextMenu(activity_lista_alunos_listview)
     }
 
     private fun remove(aluno: Aluno) {
