@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_lista_alunos.*
 class ListaAlunosActivity : AppCompatActivity() {
     private val dao = AlunoDAO()
     private val alunos = dao.alunos
+    private lateinit var adapter: ArrayAdapter<Aluno>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +46,14 @@ class ListaAlunosActivity : AppCompatActivity() {
         activity_lista_alunos_listview.setOnItemLongClickListener { adapterView, view, posicao, id ->
             var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
             dao.remove(alunoEscolhido)
+            adapter.remove(alunoEscolhido)
             true
         }
     }
 
     private fun configuraAdapter() {
-        activity_lista_alunos_listview.adapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, alunos)
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, alunos)
+        activity_lista_alunos_listview.adapter = adapter
     }
 
     private fun configuraListenerDeCliquePorItem() {
