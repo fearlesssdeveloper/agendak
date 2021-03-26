@@ -1,6 +1,8 @@
 package br.com.alura.agendak.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
@@ -23,8 +25,21 @@ class FormularioAlunoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_aluno)
         inicializacaoDosCampos()
-        configuraBotaoSalvar()
         carregaAluno()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_formulario_aluno_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.activity_formulario_aluno_menu_salvar -> {
+                finalizaFormulario()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun carregaAluno() {
@@ -43,12 +58,6 @@ class FormularioAlunoActivity : AppCompatActivity() {
         campoNome.setText(aluno.nome)
         campoTelefone.setText(aluno.telefone)
         campoEmail.setText(aluno.email)
-    }
-
-    private fun configuraBotaoSalvar() {
-        activity_formulario_aluno_button.setOnClickListener {
-            finalizaFormulario()
-        }
     }
 
     private fun finalizaFormulario() {
