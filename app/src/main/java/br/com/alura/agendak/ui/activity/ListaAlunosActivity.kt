@@ -3,11 +3,10 @@ package br.com.alura.agendak.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
@@ -86,7 +85,29 @@ class ListaAlunosActivity : AppCompatActivity() {
 
     private fun configuraAdapter() {
         adapter = ArrayAdapter(this, R.layout.item_aluno)
-        activity_lista_alunos_listview.adapter = adapter
+        activity_lista_alunos_listview.adapter = object : BaseAdapter(){
+
+            private val alunos = ArrayList<Aluno>()
+
+            override fun getCount(): Int {
+                return alunos.size
+            }
+
+            override fun getItem(posicao: Int): Aluno {
+                return alunos[posicao]
+            }
+
+            override fun getItemId(posicao: Int): Long {
+                return alunos[posicao].id.toLong()
+            }
+
+            override fun getView(posicao: Int, view: View?, viewGroup: ViewGroup?): View {
+                val viewCriada = LayoutInflater.from(this@ListaAlunosActivity)
+                    .inflate(R.layout.item_aluno, viewGroup)
+                return viewCriada
+            }
+
+        }
     }
 
     private fun configuraListenerDeCliquePorItem() {
