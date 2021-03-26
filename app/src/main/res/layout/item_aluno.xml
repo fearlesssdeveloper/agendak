@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="(99) 98435-0068"
-        android:textSize="24sp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintTop_toBottomOf="@id/item_aluno_nome"
         app:layout_constraintStart_toStartOf="parent"/>
 

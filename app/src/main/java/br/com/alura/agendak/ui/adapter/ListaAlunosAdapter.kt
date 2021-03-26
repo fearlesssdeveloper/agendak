@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import br.com.alura.agendak.R
 import br.com.alura.agendak.model.Aluno
+import kotlinx.android.synthetic.main.item_aluno.view.*
 
 class ListaAlunosAdapter(private val context: Context) : BaseAdapter() {
 
@@ -25,8 +26,16 @@ class ListaAlunosAdapter(private val context: Context) : BaseAdapter() {
     }
 
     override fun getView(posicao: Int, view: View?, viewGroup: ViewGroup?): View {
-        return LayoutInflater.from(context)
+        val viewCriada = LayoutInflater.from(context)
             .inflate(R.layout.item_aluno, viewGroup, false)
+
+        val alunoDevolvido = alunos[posicao]
+
+        val nome = viewCriada.item_aluno_nome
+        nome.text = alunoDevolvido.nome
+        val telefone = viewCriada.item_aluno_telefone
+        telefone.text = alunoDevolvido.telefone
+        return viewCriada
     }
 
     fun clear() {
