@@ -12,12 +12,13 @@ import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
 import br.com.alura.agendak.model.Aluno
 import br.com.alura.agendak.ui.activity.ConstantesActivities.Companion.CHAVE_ALUNO
+import br.com.alura.agendak.ui.adapter.ListaAlunosAdapter
 import kotlinx.android.synthetic.main.activity_lista_alunos.*
 
 class ListaAlunosActivity : AppCompatActivity() {
     private val dao = AlunoDAO()
     private val alunos = dao.alunos
-    private lateinit var adapter: ArrayAdapter<Aluno>
+    private lateinit var adapter: ListaAlunosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +45,7 @@ class ListaAlunosActivity : AppCompatActivity() {
             R.id.activity_lista_alunos_menu_remover -> {
                 val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
                 val alunoEscolhido = adapter.getItem(menuInfo.position)
-                alunoEscolhido?.let {
-                    remove(it)
-                }
+                remove(alunoEscolhido)
             }
         }
         return super.onContextItemSelected(item)
@@ -84,30 +83,8 @@ class ListaAlunosActivity : AppCompatActivity() {
     }
 
     private fun configuraAdapter() {
-        adapter = ArrayAdapter(this, R.layout.item_aluno)
-        activity_lista_alunos_listview.adapter = object : BaseAdapter(){
-
-            private val alunos = ArrayList<Aluno>()
-
-            override fun getCount(): Int {
-                return alunos.size
-            }
-
-            override fun getItem(posicao: Int): Aluno {
-                return alunos[posicao]
-            }
-
-            override fun getItemId(posicao: Int): Long {
-                return alunos[posicao].id.toLong()
-            }
-
-            override fun getView(posicao: Int, view: View?, viewGroup: ViewGroup?): View {
-                val viewCriada = LayoutInflater.from(this@ListaAlunosActivity)
-                    .inflate(R.layout.item_aluno, viewGroup)
-                return viewCriada
-            }
-
-        }
+        adapter = ListaAlunosAdapter(this)
+        activity_lista_alunos_listview.adapter = adapter
     }
 
     private fun configuraListenerDeCliquePorItem() {
