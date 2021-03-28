@@ -1,5 +1,7 @@
 package br.com.alura.agendak.ui.activity
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +28,13 @@ class ListaAlunosActivity : AppCompatActivity() {
         title = "Lista de Alunos"
         configuraFabNovoAluno()
         configuraLista()
+
+        AlertDialog.Builder(this)
+            .setTitle("Removendo aluno")
+            .setMessage("Tem certeza que quer remover o aluno?")
+            .setPositiveButton("Sim", null)
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     override fun onCreateContextMenu(
