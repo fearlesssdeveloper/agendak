@@ -26,27 +26,32 @@ class ListaAlunosAdapter(private val context: Context) : BaseAdapter() {
     }
 
     override fun getView(posicao: Int, view: View?, viewGroup: ViewGroup?): View {
-        val viewCriada = LayoutInflater.from(context)
-            .inflate(R.layout.item_aluno, viewGroup, false)
+        val viewCriada = criaView(viewGroup)
 
         val alunoDevolvido = alunos[posicao]
-
-        val nome = viewCriada.item_aluno_nome
-        nome.text = alunoDevolvido.nome
-        val telefone = viewCriada.item_aluno_telefone
-        telefone.text = alunoDevolvido.telefone
+        vincula(viewCriada, alunoDevolvido)
         return viewCriada
     }
 
-    fun clear() {
-        alunos.clear()
+    private fun vincula(viewC: View, aluno: Aluno) {
+        val nome = viewC.item_aluno_nome
+        nome.text = aluno.nome
+        val telefone = viewC.item_aluno_telefone
+        telefone.text = aluno.telefone
     }
 
-    fun addAll(alunos: List<Aluno>) {
+    private fun criaView(viewGroup: ViewGroup?) = LayoutInflater
+        .from(context)
+        .inflate(R.layout.item_aluno, viewGroup, false)
+
+    fun atualiza(alunos: List<Aluno>) {
+        this.alunos.clear()
         this.alunos.addAll(alunos)
+        notifyDataSetChanged()
     }
 
     fun remove(aluno: Aluno) {
         alunos.remove(aluno)
+        notifyDataSetChanged()
     }
 }

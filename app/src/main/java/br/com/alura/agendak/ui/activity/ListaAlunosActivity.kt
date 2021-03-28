@@ -67,8 +67,7 @@ class ListaAlunosActivity : AppCompatActivity() {
     }
 
     private fun atualizaAlunos() {
-        adapter.clear()
-        adapter.addAll(alunos)
+        adapter.atualiza(alunos)
     }
 
     private fun configuraLista() {
