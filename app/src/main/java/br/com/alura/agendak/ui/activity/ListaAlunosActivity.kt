@@ -26,9 +26,6 @@ class ListaAlunosActivity : AppCompatActivity() {
         title = "Lista de Alunos"
         configuraFabNovoAluno()
         configuraLista()
-        dao.salva(Aluno(nome = "Alex", telefone = "984350068", email = "ze@icloud.com"))
-        dao.salva(Aluno(nome = "Anna", telefone = "984030407", email = "anna@icloud.com"))
-
     }
 
     override fun onCreateContextMenu(
