@@ -3,9 +3,9 @@
 
     <item
         android:id="@+id/activity_lista_alunos_menu_remover"
-        android:title="Remover" />
+        android:title="@string/activity_lista_alunos_menu_contexto_remover" />
 
     <item
         android:id="@+id/activity_lista_alunos_menu_editar"
-        android:title="Editar"/>
+        android:title="@string/activity_lista_alunos_menu_contexto_editar"/>
 </menu>

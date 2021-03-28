@@ -1,14 +1,12 @@
 package br.com.alura.agendak.ui.activity
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.ContextMenu
+import android.view.MenuItem
+import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
 import br.com.alura.agendak.dao.AlunoDAO
@@ -28,13 +26,6 @@ class ListaAlunosActivity : AppCompatActivity() {
         title = "Lista de Alunos"
         configuraFabNovoAluno()
         configuraLista()
-
-        AlertDialog.Builder(this)
-            .setTitle("Removendo aluno")
-            .setMessage("Tem certeza que quer remover o aluno?")
-            .setPositiveButton("Sim", null)
-            .setNegativeButton("Não", null)
-            .show()
     }
 
     override fun onCreateContextMenu(
@@ -49,12 +40,23 @@ class ListaAlunosActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.activity_lista_alunos_menu_remover -> {
+                confirmaRemocao(item)
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    private fun confirmaRemocao(item: MenuItem) {
+        AlertDialog.Builder(this)
+            .setTitle("Removendo aluno")
+            .setMessage("Tem certeza que quer remover o aluno?")
+            .setPositiveButton("Sim") { _, _ ->
                 val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
                 val alunoEscolhido = adapter.getItem(menuInfo.position)
                 remove(alunoEscolhido)
             }
-        }
-        return super.onContextItemSelected(item)
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     private fun configuraFabNovoAluno() {
@@ -94,7 +96,7 @@ class ListaAlunosActivity : AppCompatActivity() {
 
     private fun configuraListenerDeCliquePorItem() {
         activity_lista_alunos_listview.setOnItemClickListener { adapterView, _, posicao, _ ->
-            var alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
+            val alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
             abreFormularioModoEditaAluno(alunoEscolhido)
         }
     }

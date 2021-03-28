@@ -21,7 +21,7 @@ class AlunoDAO {
     }
 
     fun edita(aluno: Aluno) {
-        var alunoEncontrado: Aluno? = buscaAlunoPeloId(aluno)
+        val alunoEncontrado: Aluno? = buscaAlunoPeloId(aluno)
         alunoEncontrado?.let {
             val posicao = Companion.alunos.indexOf(alunoEncontrado)
             Companion.alunos[posicao] = aluno

@@ -3,5 +3,8 @@
     <string name="formulario_nome">Nome:</string>
     <string name="formulario_telefone">Telefone:</string>
     <string name="formulario_email">Email:</string>
-    <string name="formulario_button">Salvar</string>
+    <string name="activity_formulario_aluno_menu_botao_salvar">Salvar o aluno</string>
+    <string name="activity_lista_alunos_menu_contexto_remover">Remover</string>
+    <string name="activity_lista_alunos_menu_contexto_editar">Editar</string>
+    <string name="activity_lista_alunos_fab_descricao">Botão para adicionar novo aluno</string>
 </resources>
