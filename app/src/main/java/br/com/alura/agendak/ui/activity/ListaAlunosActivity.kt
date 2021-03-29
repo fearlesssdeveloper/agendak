@@ -1,24 +1,20 @@
 package br.com.alura.agendak.ui.activity
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.agendak.R
-import br.com.alura.agendak.dao.AlunoDAO
 import br.com.alura.agendak.model.Aluno
+import br.com.alura.agendak.ui.ListaAlunosView
 import br.com.alura.agendak.ui.activity.ConstantesActivities.Companion.CHAVE_ALUNO
-import br.com.alura.agendak.ui.adapter.ListaAlunosAdapter
 import kotlinx.android.synthetic.main.activity_lista_alunos.*
 
 class ListaAlunosActivity : AppCompatActivity() {
-    private val dao = AlunoDAO()
-    private val alunos = dao.alunos
-    private lateinit var adapter: ListaAlunosAdapter
+    private val listaAlunosView = ListaAlunosView(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,23 +36,10 @@ class ListaAlunosActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.activity_lista_alunos_menu_remover -> {
-                confirmaRemocao(item)
+                listaAlunosView.confirmaRemocao(item)
             }
         }
         return super.onContextItemSelected(item)
-    }
-
-    private fun confirmaRemocao(item: MenuItem) {
-        AlertDialog.Builder(this)
-            .setTitle("Removendo aluno")
-            .setMessage("Tem certeza que quer remover o aluno?")
-            .setPositiveButton("Sim") { _, _ ->
-                val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-                val alunoEscolhido = adapter.getItem(menuInfo.position)
-                remove(alunoEscolhido)
-            }
-            .setNegativeButton("Não", null)
-            .show()
     }
 
     private fun configuraFabNovoAluno() {
@@ -71,31 +54,18 @@ class ListaAlunosActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        atualizaAlunos()
-    }
-
-    private fun atualizaAlunos() {
-        adapter.atualiza(alunos)
+        listaAlunosView.atualizaAlunos()
     }
 
     private fun configuraLista() {
-        configuraAdapter()
-        configuraListenerDeCliquePorItem()
-        registerForContextMenu(activity_lista_alunos_listview)
+        val listaDeAlunos = activity_lista_alunos_listview
+        listaAlunosView.configuraAdapter(listaDeAlunos)
+        configuraListenerDeCliquePorItem(listaDeAlunos)
+        registerForContextMenu(listaDeAlunos)
     }
 
-    private fun remove(aluno: Aluno) {
-        dao.remove(aluno)
-        adapter.remove(aluno)
-    }
-
-    private fun configuraAdapter() {
-        adapter = ListaAlunosAdapter(this)
-        activity_lista_alunos_listview.adapter = adapter
-    }
-
-    private fun configuraListenerDeCliquePorItem() {
-        activity_lista_alunos_listview.setOnItemClickListener { adapterView, _, posicao, _ ->
+    private fun configuraListenerDeCliquePorItem(listaDeAlunos : ListView) {
+        listaDeAlunos.setOnItemClickListener { adapterView, _, posicao, _ ->
             val alunoEscolhido = adapterView.getItemAtPosition(posicao) as Aluno
             abreFormularioModoEditaAluno(alunoEscolhido)
         }
